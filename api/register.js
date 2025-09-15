@@ -2,49 +2,30 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-// MongoDB Atlas connection for Vercel
-let cachedConnection = null;
-
+// MongoDB connection for MERN stack
 const connectDB = async () => {
-  if (cachedConnection && mongoose.connection.readyState === 1) {
-    return cachedConnection;
+  if (mongoose.connections[0].readyState) {
+    return;
   }
 
   try {
-    const connection = await mongoose.connect(process.env.MONGODB_URI, {
+    await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000,
-      bufferCommands: false,
-      bufferMaxEntries: 0
     });
-    
-    cachedConnection = connection;
-    console.log('Connected to MongoDB Atlas');
-    return connection;
+    console.log('MongoDB Connected');
   } catch (error) {
-    console.error('MongoDB Atlas connection error:', error);
-    cachedConnection = null;
+    console.error('MongoDB connection failed:', error);
     throw error;
   }
 };
 
-// User Schema
+// User Schema - MERN stack model
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true, select: false }
-}, {
-  timestamps: true
-});
-
-// Hash password before saving
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  next();
-});
+  password: { type: String, required: true }
+}, { timestamps: true });
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 
