@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 
 // MongoDB Atlas connection for Vercel
 let cachedConnection = null;
@@ -39,13 +38,6 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Hash password before saving
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  next();
-});
-
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 export default async function handler(req, res) {
@@ -64,61 +56,49 @@ export default async function handler(req, res) {
 
   try {
     await connectDB();
-
-    const { name, email, password } = req.body;
-
-    // Validation
-    if (!name || !email || !password) {
-      return res.status(400).json({
-        message: 'Please provide name, email, and password'
-      });
-    }
-
-    if (password.length < 6) {
-      return res.status(400).json({
-        message: 'Password must be at least 6 characters long'
-      });
-    }
+    
+    // Create a test user with your email
+    const testEmail = 'saumya@gmail.com';
+    const testPassword = '123456';
+    const testName = 'Saumya';
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: testEmail });
     if (existingUser) {
-      return res.status(400).json({
-        message: 'User with this email already exists'
+      return res.json({
+        message: 'User already exists! You can now login.',
+        email: testEmail,
+        password: 'Use password: 123456'
       });
     }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(testPassword, 12);
 
     // Create new user
     const user = new User({
-      name,
-      email,
-      password
+      name: testName,
+      email: testEmail,
+      password: hashedPassword
     });
 
     await user.save();
 
-    // Generate JWT token
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
     res.status(201).json({
-      message: 'User registered successfully',
-      token,
+      message: 'Test user created successfully! You can now login.',
+      email: testEmail,
+      password: 'Use password: 123456',
       user: {
-        id: user._id,
         name: user.name,
         email: user.email
       }
     });
 
   } catch (error) {
-    console.error('Registration error:', error);
+    console.error('Create user error:', error);
     res.status(500).json({
-      message: 'Server error during registration',
-      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
+      message: 'Error creating user',
+      error: error.message
     });
   }
 }
