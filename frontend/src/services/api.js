@@ -1,11 +1,16 @@
 import axios from 'axios';
 
-// Create axios instance with base configuration
+// Create axios instance with Chrome-compatible configuration
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Cache-Control': 'no-cache',
+    'Pragma': 'no-cache'
+  },
+  timeout: 30000, // 30 second timeout for Chrome
+  withCredentials: false, // Chrome CORS fix
 });
 
 // Request interceptor to add auth token to headers

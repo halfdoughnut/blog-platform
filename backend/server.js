@@ -8,12 +8,32 @@ const postRoutes = require('./routes/posts');
 
 const app = express();
 
-// Middleware
+// Middleware with Chrome-compatible CORS
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-frontend-domain.vercel.app', 'https://*.vercel.app']
-    : ['http://localhost:3000'],
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    
+    // Allow all Vercel domains and localhost for Chrome compatibility
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'https://localhost:3000', 
+      /\.vercel\.app$/,
+      /\.vercel-app\.com$/
+    ];
+    
+    const isAllowed = allowedOrigins.some(allowed => {
+      if (typeof allowed === 'string') return allowed === origin;
+      return allowed.test(origin);
+    });
+    
+    callback(null, isAllowed);
+  },
+  credentials: false, // Chrome security fix
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Cache-Control', 'Pragma'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
 app.use(express.json({ limit: '10mb' }));
 
