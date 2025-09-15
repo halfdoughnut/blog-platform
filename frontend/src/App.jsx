@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { useTheme } from './context/ThemeContext.jsx';
 
@@ -263,11 +263,11 @@ const Home = () => {
                   For readers, encountering mindful writing is like finding a quiet garden in the middle of a bustling city. It offers respite, reflection, and the rare gift of feeling truly understood. In a world of infinite content, mindful writing stands out not by shouting louder, but by speaking more truthfully.
                   
                   So whether you're crafting a blog post, writing in your journal, or composing your memoir, remember that every word is an opportunity. An opportunity to connect, to heal, to inspire, to transform both yourself and your readers through the simple yet profound act of mindful writing.`}
-                  style="prominent"
+                  styleVariant="prominent"
                   showWordCount={true}
                 />
                 <span className="text-gray-400">•</span>
-                <SessionClock style="prominent" showSeconds={true} className="" />
+                <SessionClock styleVariant="prominent" showSeconds={true} className="" />
                 <span className="text-gray-400">•</span>
                 <span className="text-gray-400">March 12, 2024</span>
               </div>
@@ -401,7 +401,6 @@ function App() {
 }
 
 function AppContent() {
-  const { toggleTheme } = useTheme();
   
   return (
     <AuthProvider>

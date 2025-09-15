@@ -38,7 +38,7 @@ const FloatingSessionTimer = ({ position = "bottom-right" }) => {
             <div className="flex items-center gap-2">
               <span className="text-xs text-gray-300 font-medium">Session Time:</span>
               <SessionClock 
-                style="default" 
+                styleVariant="default" 
                 showSeconds={true} 
                 className="text-amber-400"
               />
