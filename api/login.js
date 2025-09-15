@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 // MongoDB connection
 let cachedConnection = null;
@@ -27,7 +27,7 @@ const connectDB = async () => {
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true, select: false }
 }, {
   timestamps: true
 });
@@ -38,7 +38,8 @@ export default async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Cache-Control', 'no-store');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -49,28 +50,43 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log('Login attempt started');
     await connectDB();
+    console.log('Database connected');
 
     const { email, password } = req.body;
+    console.log('Login attempt for:', email);
 
     // Validation
     if (!email || !password) {
+      console.log('Missing email or password');
       return res.status(400).json({
         message: 'Please provide email and password'
       });
     }
 
     // Find user and include password for comparison
-    const user = await User.findOne({ email }).select('+password');
+    console.log('Searching for user:', email);
+    const user = await User.findOne({ email });
+    console.log('User found:', !!user);
+    
     if (!user) {
+      console.log('User not found');
       return res.status(401).json({
         message: 'Invalid email or password'
       });
     }
 
+    // Get the user with password field
+    const userWithPassword = await User.findById(user._id).select('+password');
+    console.log('User with password retrieved');
+
     // Check password
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    const isPasswordCorrect = await bcrypt.compare(password, userWithPassword.password);
+    console.log('Password check result:', isPasswordCorrect);
+    
     if (!isPasswordCorrect) {
+      console.log('Password incorrect');
       return res.status(401).json({
         message: 'Invalid email or password'
       });
@@ -82,6 +98,7 @@ export default async function handler(req, res) {
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
+    console.log('Token generated successfully');
 
     res.json({
       message: 'Login successful',
@@ -97,7 +114,7 @@ export default async function handler(req, res) {
     console.error('Login error:', error);
     res.status(500).json({
       message: 'Server error during login',
-      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
+      error: error.message
     });
   }
 }

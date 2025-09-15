@@ -1,6 +1,5 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 // MongoDB connection
 let cachedConnection = null;
@@ -27,16 +26,9 @@ const connectDB = async () => {
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true, select: false }
+  password: { type: String, required: true }
 }, {
   timestamps: true
-});
-
-// Hash password before saving
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  next();
 });
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
@@ -58,60 +50,48 @@ export default async function handler(req, res) {
   try {
     await connectDB();
 
-    const { name, email, password } = req.body;
-
-    // Validation
-    if (!name || !email || !password) {
-      return res.status(400).json({
-        message: 'Please provide name, email, and password'
-      });
-    }
-
-    if (password.length < 6) {
-      return res.status(400).json({
-        message: 'Password must be at least 6 characters long'
-      });
-    }
+    // Create test user with known credentials
+    const testEmail = 'saumya@gmail.com';
+    const testPassword = '123456';
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: testEmail });
     if (existingUser) {
-      return res.status(400).json({
-        message: 'User with this email already exists'
+      return res.json({
+        message: 'Test user already exists',
+        user: {
+          email: testEmail,
+          name: existingUser.name
+        }
       });
     }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(testPassword, 12);
 
     // Create new user
     const user = new User({
-      name,
-      email,
-      password
+      name: 'Saumya Test User',
+      email: testEmail,
+      password: hashedPassword
     });
 
     await user.save();
 
-    // Generate JWT token
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
     res.status(201).json({
-      message: 'User registered successfully',
-      token,
+      message: 'Test user created successfully',
       user: {
-        id: user._id,
+        email: testEmail,
         name: user.name,
-        email: user.email
+        password: 'Use password: 123456'
       }
     });
 
   } catch (error) {
-    console.error('Registration error:', error);
+    console.error('Create test user error:', error);
     res.status(500).json({
-      message: 'Server error during registration',
-      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
+      message: 'Server error creating test user',
+      error: error.message
     });
   }
 }
