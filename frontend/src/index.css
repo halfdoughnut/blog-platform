@@ -1,0 +1,294 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Theme CSS Variables - Coffee/Brown Theme */
+  :root {
+    --bg-primary: 252 248 241;    /* Warm cream */
+    --bg-secondary: 245 235 220;  /* Light coffee */
+    --bg-tertiary: 238 225 203;   /* Soft beige */
+    --text-primary: 44 25 15;     /* Dark coffee */
+    --text-secondary: 92 64 51;   /* Medium brown */
+    --text-tertiary: 139 111 96;  /* Light brown */
+    --border-primary: 215 190 165; /* Coffee border */
+    --border-secondary: 196 165 132; /* Darker coffee border */
+    --accent-primary: 160 82 45;  /* Rich coffee */
+    --accent-secondary: 101 67 33; /* Dark roast */
+  }
+  
+  .dark {
+    --bg-primary: 28 20 15;       /* Dark coffee */
+    --bg-secondary: 42 30 22;     /* Medium dark coffee */
+    --bg-tertiary: 56 40 30;      /* Lighter dark coffee */
+    --text-primary: 245 235 220;  /* Light cream */
+    --text-secondary: 215 190 165; /* Coffee cream */
+    --text-tertiary: 185 160 135; /* Warm beige */
+    --border-primary: 92 64 51;   /* Brown border */
+    --border-secondary: 139 111 96; /* Light brown border */
+    --accent-primary: 215 174 130; /* Golden coffee */
+    --accent-secondary: 160 82 45; /* Rich coffee */
+  }
+  
+  /* Apply theme variables to body */
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background-color: rgb(var(--bg-primary));
+    color: rgb(var(--text-primary));
+    transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Modern typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+  
+  /* Smooth theme transitions */
+  * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+  
+  .btn-success {
+    @apply bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+  
+  .btn-danger {
+    @apply bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  }
+  
+  /* Animation utilities */
+  @keyframes slideInUp {
+    from {
+      transform: translateY(60px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideInDown {
+    from {
+      transform: translateY(-40px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes scaleIn {
+    from {
+      transform: scaleX(0);
+      opacity: 0;
+    }
+    to {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      transform: translateY(50px) scale(0.8);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .animate-in {
+    animation: slideInUp 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+  
+  .animate-in.scale {
+    animation: scaleIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+  
+  .animate-in.fade-up {
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+  
+  /* Hover effects */
+  .hover-scale {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Interactive heading effects */
+  @keyframes subtleFloat {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-3px);
+    }
+  }
+  
+  .subtle-float {
+    animation: subtleFloat 3s ease-in-out infinite;
+  }
+  
+  .subtitle-float:nth-child(1) { animation-delay: 0s; }
+  .subtitle-float:nth-child(2) { animation-delay: 0.1s; }
+  .subtitle-float:nth-child(3) { animation-delay: 0.2s; }
+  
+  /* Background floating animations */
+  @keyframes floatSlow {
+    0%, 100% {
+      transform: translateY(0px) translateX(0px);
+    }
+    33% {
+      transform: translateY(-20px) translateX(10px);
+    }
+    66% {
+      transform: translateY(10px) translateX(-15px);
+    }
+  }
+  
+  @keyframes floatMedium {
+    0%, 100% {
+      transform: translateY(0px) translateX(0px);
+    }
+    50% {
+      transform: translateY(-15px) translateX(20px);
+    }
+  }
+  
+  @keyframes floatFast {
+    0%, 100% {
+      transform: translateY(0px) rotate(45deg);
+    }
+    25% {
+      transform: translateY(-10px) rotate(50deg);
+    }
+    75% {
+      transform: translateY(8px) rotate(40deg);
+    }
+  }
+  
+  .animate-float-slow {
+    animation: floatSlow 15s ease-in-out infinite;
+  }
+  
+  .animate-float-medium {
+    animation: floatMedium 12s ease-in-out infinite;
+  }
+  
+  .animate-float-fast {
+    animation: floatFast 8s ease-in-out infinite;
+  }
+  
+  /* Reading Progress Animations */
+  @keyframes slideInFromTop {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .animate-in {
+    animation: slideInFromTop 0.3s ease-out forwards;
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+  
+  .slide-in-from-top {
+    animation: slideInFromTop 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+  
+  /* Interactive heading word hover effects */
+  .word-hover {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  .word-hover:hover {
+    transform: scale(1.1) translateY(-2px);
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .dark .word-hover:hover {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Theme-aware utility classes */
+  .bg-theme-primary {
+    background-color: rgb(var(--bg-primary));
+  }
+  
+  .bg-theme-secondary {
+    background-color: rgb(var(--bg-secondary));
+  }
+  
+  .bg-theme-tertiary {
+    background-color: rgb(var(--bg-tertiary));
+  }
+  
+  .text-theme-primary {
+    color: rgb(var(--text-primary));
+  }
+  
+  .text-theme-secondary {
+    color: rgb(var(--text-secondary));
+  }
+  
+  .text-theme-tertiary {
+    color: rgb(var(--text-tertiary));
+  }
+  
+  .border-theme-primary {
+    border-color: rgb(var(--border-primary));
+  }
+  
+  .border-theme-secondary {
+    border-color: rgb(var(--border-secondary));
+  }
+  
+  .bg-theme-accent {
+    background-color: rgb(var(--accent-primary));
+  }
+  
+  .text-theme-accent {
+    color: rgb(var(--accent-primary));
+  }
+}
