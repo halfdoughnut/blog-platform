@@ -50,9 +50,9 @@ api.interceptors.response.use(
 
 // Auth API calls
 export const authAPI = {
-  register: (userData) => api.post('/auth/register', userData),
-  login: (credentials) => api.post('/auth/login', credentials),
-  getProfile: () => api.get('/auth/me')
+  register: (userData) => api.post('/api/register', userData),
+  login: (credentials) => api.post('/api/login', credentials),
+  getProfile: () => api.get('/api/me')
 };
 
 // Posts API calls
