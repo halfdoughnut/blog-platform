@@ -29,8 +29,16 @@ api.interceptors.request.use(
 
 // Response interceptor to handle token expiration
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('API Response:', response);
+    return response;
+  },
   (error) => {
+    console.error('API Error:', error);
+    console.error('Error Response:', error.response);
+    console.error('Error Status:', error.response?.status);
+    console.error('Error Data:', error.response?.data);
+    
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');

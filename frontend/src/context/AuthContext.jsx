@@ -70,8 +70,20 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       setIsLoading(true);
+      console.log('Starting registration...', userData);
+      
       const response = await authAPI.register(userData);
+      console.log('Registration response:', response);
+      
+      if (!response || !response.data) {
+        throw new Error('Invalid response from server');
+      }
+      
       const { token, user: newUser } = response.data;
+      
+      if (!token || !newUser) {
+        throw new Error('Missing token or user data in response');
+      }
 
       // Store token and user data
       localStorage.setItem('token', token);
@@ -82,7 +94,15 @@ export const AuthProvider = ({ children }) => {
 
       return { success: true, message: 'Registration successful' };
     } catch (error) {
-      const message = error.response?.data?.message || 'Registration failed';
+      console.error('Registration error:', error);
+      let message = 'Registration failed';
+      
+      if (error.response?.data?.message) {
+        message = error.response.data.message;
+      } else if (error.message) {
+        message = error.message;
+      }
+      
       return { success: false, message };
     } finally {
       setIsLoading(false);
