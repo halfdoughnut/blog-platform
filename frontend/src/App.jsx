@@ -123,7 +123,7 @@ const Home = () => {
         {/* Modern Action Buttons */}
         <div 
           ref={buttonsRef}
-          className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-20"
+          className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-12"
         >
           <Link 
             to="/register" 
@@ -142,7 +142,7 @@ const Home = () => {
             }`}></div>
           </Link>
           <Link 
-            to="/login" 
+            to="/dashboard" 
             className={`group relative overflow-hidden w-full sm:w-auto border font-semibold py-4 px-12 text-lg tracking-wide transition-all duration-500 hover-scale ${
               isDark 
                 ? 'border-amber-400 text-amber-300 hover:text-white'
@@ -156,6 +156,30 @@ const Home = () => {
                 ? 'bg-gradient-to-r from-amber-600 to-orange-600'
                 : 'bg-gradient-to-r from-orange-700 to-amber-800'
             }`}></div>
+          </Link>
+        </div>
+        
+        {/* Login/Signup Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+          <Link 
+            to="/login" 
+            className={`group relative overflow-hidden w-full sm:w-auto font-medium py-3 px-8 text-base tracking-wide transition-all duration-300 hover-scale ${
+              isDark 
+                ? 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
+                : 'bg-black/5 border border-black/20 text-slate-700 hover:bg-black/10'
+            } backdrop-blur-sm rounded-lg`}
+          >
+            <span className="relative z-10">Login</span>
+          </Link>
+          <Link 
+            to="/register" 
+            className={`group relative overflow-hidden w-full sm:w-auto font-medium py-3 px-8 text-base tracking-wide transition-all duration-300 hover-scale ${
+              isDark 
+                ? 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
+                : 'bg-black/5 border border-black/20 text-slate-700 hover:bg-black/10'
+            } backdrop-blur-sm rounded-lg`}
+          >
+            <span className="relative z-10">Sign Up</span>
           </Link>
         </div>
         
