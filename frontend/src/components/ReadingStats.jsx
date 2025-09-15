@@ -68,7 +68,7 @@ const ReadingStats = ({ className = "" }) => {
     return () => {
       delete window.recordArticleRead;
     };
-  }, [stats]);
+  }, [recordArticleRead]);
 
   const formatReadingTime = (minutes) => {
     if (minutes < 60) return `${minutes} min`;

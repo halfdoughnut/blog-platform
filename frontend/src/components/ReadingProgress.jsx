@@ -52,47 +52,7 @@ const ReadingProgress = ({
         />
       </div>
 
-      {/* Reading Status Indicator (only show when actively reading) */}
-      {isReading && showTimeSpent && timeSpent > 5 && (
-        <div className="fixed top-4 right-4 z-50">
-          <div className="bg-black/70 backdrop-blur-sm text-white px-3 py-2 rounded-full text-xs font-medium flex items-center gap-2 animate-in fade-in duration-300">
-            {/* Reading indicator dot */}
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-            <span>Reading • {formatTimeSpent(timeSpent)}</span>
-            
-            {/* Progress circle */}
-            <div className="relative w-6 h-6">
-              <svg className="w-6 h-6 transform -rotate-90" viewBox="0 0 24 24">
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  fill="none"
-                  className="text-gray-600"
-                />
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  fill="none"
-                  strokeDasharray={`${2 * Math.PI * 10}`}
-                  strokeDashoffset={`${2 * Math.PI * 10 * (1 - progress / 100)}`}
-                  className="text-green-400 transition-all duration-300"
-                />
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-[8px] font-bold text-green-400">
-                  {Math.round(progress)}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Reading Status Indicator removed as requested */}
 
       {/* Reading completion celebration */}
       {progress >= 100 && (
