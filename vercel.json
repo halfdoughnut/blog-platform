@@ -1,32 +1,4 @@
 {
-  "version": 2,
-  "build": {
-    "env": {
-      "CI": "false"
-    }
-  },
-  "builds": [
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
-    },
-    {
-      "src": "backend/server.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/backend/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/build/index.html"
-    }
-  ],
+  "buildCommand": "cd backend && npm install && cd ../frontend && npm install && CI=false npm run build",
   "outputDirectory": "frontend/build"
 }

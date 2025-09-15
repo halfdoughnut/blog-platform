@@ -18,13 +18,13 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Blog Platform API is running!' });
 });
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/posts', postRoutes);
+// Routes (without /api prefix since proxy handles it)
+app.use('/auth', authRoutes);
+app.use('/posts', postRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
