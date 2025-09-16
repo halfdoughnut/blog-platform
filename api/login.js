@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 // MongoDB connection for MERN stack
 const connectDB = async () => {
@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -44,6 +44,12 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log('Login API called');
+    console.log('Environment check:', {
+      MONGODB_URI: process.env.MONGODB_URI ? 'Present' : 'Missing',
+      JWT_SECRET: process.env.JWT_SECRET ? 'Present' : 'Missing'
+    });
+    
     // Connect to MongoDB
     await connectDB();
 
