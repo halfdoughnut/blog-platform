@@ -143,7 +143,7 @@ const Home = () => {
             }`}></div>
           </Link>
           <Link 
-            to="/dashboard" 
+            to="/login" 
             className={`group relative overflow-hidden w-full sm:w-auto border font-semibold py-4 px-12 text-lg tracking-wide transition-all duration-500 hover-scale ${
               isDark 
                 ? 'border-amber-400 text-amber-300 hover:text-white'
