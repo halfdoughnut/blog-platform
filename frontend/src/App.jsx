@@ -30,7 +30,7 @@ import SmartEditor from './components/SmartEditor.jsx';
 
 const Home = () => {
   const { isDark } = useTheme();
-  const { isAuthenticated } = useAuth();
+  const { } = useAuth();
   const titleRef = React.useRef(null);
   const dividerRef = React.useRef(null);
   const subtitleRef = React.useRef(null);

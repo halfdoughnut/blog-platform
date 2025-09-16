@@ -7,7 +7,7 @@ const ReadingProgress = ({
   color = "amber",
   height = "thin" 
 }) => {
-  const { progress, isReading, timeSpent } = useReadingProgress();
+  const { progress } = useReadingProgress();
 
   // Color variants
   const colors = {
@@ -32,12 +32,12 @@ const ReadingProgress = ({
     sticky: "sticky top-0 z-40"
   };
 
-  const formatTimeSpent = (seconds) => {
-    if (seconds < 60) return `${seconds}s`;
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}m ${remainingSeconds}s`;
-  };
+  // const formatTimeSpent = (seconds) => {
+  //   if (seconds < 60) return `${seconds}s`;
+  //   const minutes = Math.floor(seconds / 60);
+  //   const remainingSeconds = seconds % 60;
+  //   return `${minutes}m ${remainingSeconds}s`;
+  // };
 
   return (
     <>
