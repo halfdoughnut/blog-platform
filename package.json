@@ -10,8 +10,7 @@
     "dev-backend": "cd backend && npm run dev",
     "dev-frontend": "cd frontend && npm start",
     "build-frontend": "cd frontend && npm run build",
-    "start-backend": "cd backend && npm start",
-    "vercel-build": "cd backend && npm install && cd ../frontend && npm install && CI=false npm run build"
+    "start-backend": "cd backend && npm start"
   },
   "keywords": [
     "react",
