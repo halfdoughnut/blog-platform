@@ -41,7 +41,7 @@ const Navbar = () => {
                 <Link to="/create-post" className="text-gray-200 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">➕ New Post</Link>
                 <div className="relative">
                   <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center text-gray-200 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                    👤 {user?.name || 'User'}
+                    👤 SomDev
                     <svg className="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/></svg>
                   </button>
                   {isDropdownOpen && (
@@ -75,7 +75,7 @@ const Navbar = () => {
                 <>
                   <Link to="/dashboard" className="text-gray-200 hover:text-white block px-3 py-2 rounded-md text-base font-medium" onClick={() => setIsMenuOpen(false)}>📊 Dashboard</Link>
                   <Link to="/create-post" className="text-gray-200 hover:text-white block px-3 py-2 rounded-md text-base font-medium" onClick={() => setIsMenuOpen(false)}>➕ New Post</Link>
-                  <button onClick={handleLogout} className="text-gray-200 hover:text-white block w-full text-left px-3 py-2 rounded-md text-base font-medium">🚪 Logout ({user?.name})</button>
+                  <button onClick={handleLogout} className="text-gray-200 hover:text-white block w-full text-left px-3 py-2 rounded-md text-base font-medium">🚪 Logout (SomDev)</button>
                 </>
               ) : (
                 <>

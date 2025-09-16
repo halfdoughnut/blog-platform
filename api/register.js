@@ -69,11 +69,15 @@ export default async function handler(req, res) {
       });
     }
 
+    // Hash password before saving
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
     // Create new user
     const user = new User({
       name,
       email,
-      password
+      password: hashedPassword
     });
 
     await user.save();
@@ -81,7 +85,7 @@ export default async function handler(req, res) {
     // Generate JWT token
     const token = jwt.sign(
       { id: user._id },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'devansh',
       { expiresIn: '7d' }
     );
 
