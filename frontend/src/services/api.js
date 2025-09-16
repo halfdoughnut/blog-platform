@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with Chrome-compatible configuration
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
+  baseURL: process.env.REACT_APP_API_URL || '/api',
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -50,9 +50,9 @@ api.interceptors.response.use(
 
 // Auth API calls
 export const authAPI = {
-  register: (userData) => api.post('/api/register', userData),
-  login: (credentials) => api.post('/api/login', credentials),
-  getProfile: () => api.get('/api/me')
+  register: (userData) => api.post('/register', userData),
+  login: (credentials) => api.post('/login', credentials),
+  getProfile: () => api.get('/me')
 };
 
 // Posts API calls
