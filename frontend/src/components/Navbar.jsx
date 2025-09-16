@@ -53,8 +53,7 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link to="/login" className="text-gray-200 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Login</Link>
-                <Link to="/register" className="bg-white/90 hover:bg-white text-gray-900 px-4 py-2 rounded-md text-sm font-semibold transition-colors">Sign Up</Link>
+                {/* Navigation buttons removed - use homepage buttons instead */}
               </>
             )}
           </div>
@@ -79,8 +78,7 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <Link to="/login" className="text-gray-200 hover:text-white block px-3 py-2 rounded-md text-base font-medium" onClick={() => setIsMenuOpen(false)}>Login</Link>
-                  <Link to="/register" className="text-gray-200 hover:text-white block px-3 py-2 rounded-md text-base font-medium" onClick={() => setIsMenuOpen(false)}>Sign Up</Link>
+                  {/* Mobile navigation buttons removed - use homepage buttons instead */}
                 </>
               )}
             </div>

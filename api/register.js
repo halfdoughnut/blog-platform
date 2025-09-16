@@ -2,21 +2,33 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// MongoDB connection for MERN stack
+// Global connection state
+let isConnected = false;
+
+// MongoDB connection with bulletproof error handling
 const connectDB = async () => {
-  if (mongoose.connections[0].readyState) {
+  if (isConnected) {
+    console.log('Using existing MongoDB connection');
     return;
   }
 
   try {
+    console.log('Connecting to MongoDB...');
+    
     await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+      bufferCommands: false,
+      maxPoolSize: 10,
     });
-    console.log('MongoDB Connected');
+    
+    isConnected = true;
+    console.log('MongoDB connected successfully');
   } catch (error) {
-    console.error('MongoDB connection failed:', error);
-    throw error;
+    console.error('MongoDB connection error:', error);
+    throw new Error(`Database connection failed: ${error.message}`);
   }
 };
 
