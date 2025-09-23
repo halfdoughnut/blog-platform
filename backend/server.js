@@ -1,7 +1,9 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+
+// Initialize Supabase
+require('./config/supabase');
 
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/posts');
@@ -37,6 +39,31 @@ app.use(cors({
 }));
 app.use(express.json({ limit: '10mb' }));
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Welcome to Blog Platform API',
+    status: 'Active',
+    version: '1.0.0',
+    endpoints: {
+      health: '/health',
+      auth: {
+        register: 'POST /auth/register',
+        login: 'POST /auth/login',
+        profile: 'GET /auth/me'
+      },
+      posts: {
+        getAll: 'GET /posts',
+        create: 'POST /posts',
+        getById: 'GET /posts/:id',
+        update: 'PUT /posts/:id',
+        delete: 'DELETE /posts/:id'
+      }
+    },
+    documentation: 'This is a RESTful API for the Blog Platform'
+  });
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Blog Platform API is running!' });
@@ -55,43 +82,8 @@ app.use((err, req, res, next) => {
   });
 });
 
-// MongoDB connection with better error handling for serverless
-let cachedConnection = null;
-
-const connectToDatabase = async () => {
-  if (cachedConnection) {
-    return cachedConnection;
-  }
-
-  try {
-    const connection = await mongoose.connect(process.env.MONGODB_URI, {
-      bufferCommands: false,
-      bufferMaxEntries: 0,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    
-    cachedConnection = connection;
-    console.log('Connected to MongoDB');
-    return connection;
-  } catch (error) {
-    console.error('MongoDB connection error:', error);
-    throw error;
-  }
-};
-
-// Ensure database connection before handling requests
-app.use(async (req, res, next) => {
-  try {
-    await connectToDatabase();
-    next();
-  } catch (error) {
-    res.status(500).json({ 
-      message: 'Database connection failed',
-      error: process.env.NODE_ENV === 'development' ? error.message : {}
-    });
-  }
-});
+// Supabase connection is handled via the config file
+console.log('Supabase client initialized successfully');
 
 // For local development
 if (process.env.NODE_ENV !== 'production') {

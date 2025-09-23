@@ -1,5 +1,4 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const UserService = require('../services/userService');
 
 const auth = async (req, res, next) => {
   try {
@@ -22,11 +21,8 @@ const auth = async (req, res, next) => {
     }
 
     try {
-      // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      
-      // Get user from token
-      const user = await User.findById(decoded.id).select('-password');
+      // Verify token using Supabase
+      const user = await UserService.verifyToken(token);
       
       if (!user) {
         return res.status(401).json({ 
