@@ -7,7 +7,7 @@ const ThemeToggle = ({
   showLabel = true,
   className = "" 
 }) => {
-  const { theme, toggleTheme, isLight, isDark } = useTheme();
+  const { toggleTheme, isLight, isDark } = useTheme();
   const [isAnimating, setIsAnimating] = useState(false);
 
   const handleToggle = () => {

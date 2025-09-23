@@ -3,8 +3,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 const useAutoSave = (initialContent = '', draftKey = 'default', options = {}) => {
   const {
     saveInterval = 3000, // Save every 3 seconds
-    maxVersions = 10,     // Keep last 10 versions
-    enableVisualFeedback = true
+    maxVersions = 10     // Keep last 10 versions
   } = options;
 
   const [content, setContent] = useState(initialContent);

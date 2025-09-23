@@ -46,4 +46,6 @@ window.fetch = function(url, options = {}) {
   });
 };
 
-export default {};
+const polyfills = {};
+
+export default polyfills;

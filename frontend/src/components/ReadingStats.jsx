@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 const ReadingStats = ({ className = "" }) => {
   const [stats, setStats] = useState({
@@ -21,13 +21,13 @@ const ReadingStats = ({ className = "" }) => {
   }, []);
 
   // Save stats to localStorage
-  const saveStats = (newStats) => {
+  const saveStats = useCallback((newStats) => {
     setStats(newStats);
     localStorage.setItem('readingStats', JSON.stringify(newStats));
-  };
+  }, []);
 
   // Function to record a completed article read
-  const recordArticleRead = (readingTimeMinutes, wordCount) => {
+  const recordArticleRead = useCallback((readingTimeMinutes, wordCount) => {
     const today = new Date().toDateString();
     const actualReadingSpeed = Math.round(wordCount / readingTimeMinutes);
     
@@ -59,7 +59,7 @@ const ReadingStats = ({ className = "" }) => {
       setIsVisible(true);
       setTimeout(() => setIsVisible(false), 4000);
     }
-  };
+  }, [stats, saveStats, setIsVisible]);
 
   // Expose the recordArticleRead function globally for other components to use
   useEffect(() => {
